@@ -295,3 +295,4 @@ export const getExercisesData = (lessonsMap) => [
     isActive: true,
   },
 ];
+

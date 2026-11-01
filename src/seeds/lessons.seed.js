@@ -69,3 +69,4 @@ export const lessonsData = [
     isActive: true,
   },
 ];
+

@@ -13,3 +13,4 @@ router.get('/:id', getLessonById);
 router.get('/:id/exercises', protect, getLessonExercises);
 
 export default router;
+

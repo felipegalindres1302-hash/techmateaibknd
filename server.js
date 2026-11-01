@@ -18,3 +18,4 @@ process.on('unhandledRejection', (err) => {
   console.error(`❌ Error no controlado: ${err.message}`);
   server.close(() => process.exit(1));
 });
+
