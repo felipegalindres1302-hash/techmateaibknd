@@ -13,8 +13,30 @@ import achievementRoutes from './routes/achievement.routes.js';
 const app = express();
 
 // Middlewares
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+];
+
+const frontendUrl = process.env.FRONTEND_URL || process.env.CLIENT_URL;
+if (frontendUrl) {
+  allowedOrigins.push(frontendUrl.replace(/\/+$/, ''));
+}
+
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: (origin, callback) => {
+    // Permitir peticiones sin origen (ej. curl, Postman, health checks)
+    if (!origin) return callback(null, true);
+    // Permitir localhost, dominios vercel.app y el FRONTEND_URL configurado
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true,
 }));
 app.use(express.json());
