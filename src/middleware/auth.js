@@ -67,3 +67,17 @@ export const parentOnly = (req, res, next) => {
   }
   next();
 };
+
+/**
+ * Middleware to restrict access to administrators only
+ */
+export const adminOnly = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({
+      success: false,
+      message:
+        'Acceso denegado. Solo los administradores pueden realizar esta acción.',
+    });
+  }
+  next();
+};

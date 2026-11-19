@@ -47,6 +47,8 @@ const achievementSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+}, {
+  timestamps: { createdAt: true, updatedAt: true },
 });
 
 const Achievement = mongoose.model('Achievement', achievementSchema);

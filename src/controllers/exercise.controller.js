@@ -37,6 +37,7 @@ export const submitAnswer = async (req, res, next) => {
 
     // Find or create progress record
     let progress = await Progress.findOne({ userId, exerciseId });
+    const previousBestScore = progress ? progress.bestScore : 0;
 
     if (progress) {
       // Update existing progress
@@ -69,20 +70,18 @@ export const submitAnswer = async (req, res, next) => {
 
     await progress.save();
 
-    // Award points if correct (first time or better score)
+    // Award points only for the first valid answer or for improvement over the best score
     let pointsAwarded = 0;
     let userStats = null;
     let newAchievements = [];
 
     if (isCorrect) {
-      // Points based on score percentage of exercise points
-      pointsAwarded = Math.round((score / 100) * exercise.points);
+      const scoreGain = Math.max(0, score - previousBestScore);
+      pointsAwarded = Math.round((scoreGain / 100) * exercise.points);
 
-      // Only award if this is first completion or better score
-      if (progress.attempts === 1 || score >= progress.bestScore) {
-        userStats = await updateUserPoints(userId, pointsAwarded);
-        newAchievements = await checkAndAwardAchievements(userId);
-      }
+      // Actualiza racha y logros incluso si la respuesta no aporta puntos nuevos
+      userStats = await updateUserPoints(userId, pointsAwarded);
+      newAchievements = await checkAndAwardAchievements(userId);
     }
 
     // Get encouraging message from Matey

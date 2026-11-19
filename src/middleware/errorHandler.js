@@ -27,6 +27,18 @@ const errorHandler = (err, req, res, next) => {
     message = `Recurso no encontrado. ID inválido: ${err.value}`;
   }
 
+  // JSON parse errors
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    statusCode = 400;
+    message = 'El cuerpo de la solicitud no contiene un JSON válido.';
+  }
+
+  // Payload too large
+  if (err.type === 'entity.too.large') {
+    statusCode = 413;
+    message = 'El cuerpo de la solicitud es demasiado grande.';
+  }
+
   // JWT errors
   if (err.name === 'JsonWebTokenError') {
     statusCode = 401;

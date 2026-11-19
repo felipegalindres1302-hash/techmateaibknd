@@ -20,6 +20,19 @@ const lessonSchema = new mongoose.Schema(
       type: String,
       required: [true, 'La descripción en español es obligatoria'],
     },
+    objectives: {
+      type: [String],
+      default: [],
+    },
+    estimatedMinutes: {
+      type: Number,
+      default: 10,
+      min: [0, 'La duración estimada no puede ser negativa'],
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
     category: {
       type: String,
       enum: {
@@ -50,7 +63,7 @@ const lessonSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: { createdAt: 'createdAt', updatedAt: false },
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
   }
 );
 

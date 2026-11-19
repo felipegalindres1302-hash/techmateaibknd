@@ -34,9 +34,21 @@ const exerciseSchema = new mongoose.Schema(
       type: String,
       required: [true, 'La instrucción en español es obligatoria'],
     },
+    explanation: {
+      type: String,
+      default: '',
+    },
+    explanationEs: {
+      type: String,
+      default: '',
+    },
     content: {
       type: mongoose.Schema.Types.Mixed,
       required: [true, 'El contenido es obligatorio'],
+    },
+    media: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
     },
     correctAnswer: {
       type: mongoose.Schema.Types.Mixed,
@@ -60,7 +72,7 @@ const exerciseSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: { createdAt: true, updatedAt: false },
+    timestamps: { createdAt: true, updatedAt: true },
   }
 );
 
